@@ -7,9 +7,11 @@ const pdf = async (req) => {
     });
     const page = await browser.newPage();
     await page.setContent(req.body.html); // Assuming HTML is sent in the request body
-    const pdf = await page.pdf({ format: 'A4' });
+    const pdfBuffer = await page.pdf({ format: 'A4' });
     await browser.close();
-    return pdf;
+    return pdfBuffer;
 }
+
+
 
 module.exports = pdf;

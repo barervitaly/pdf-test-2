@@ -8,6 +8,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 const pdf = require('./pdf');
+const mailer = require('./mailer');
 
 
 // Increase the limit for JSON payloads
@@ -30,7 +31,19 @@ app.get('/', (req, res) => {
 
 app.post('/generate-pdf', async (req, res) => {
     const response = await pdf(req);
+    try {
+        await mailer(response, 'barer.vitaly@gmail.com');
+        console.log('PDF generated and email sent');
+    } catch(error) {
+        console.error('Error in handling PDF request:', error);
+    }
     res.contentType('application/pdf');
     res.send(response);
 });
 
+/*
+git push heroku master
+git commit -am "add body-parser"
+heroku logs --tail
+
+ */
