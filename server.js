@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 
 
 
@@ -10,6 +11,7 @@ const pdf = require('./pdf');
 
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.json({ limit: '5mb' })); // Increase the limit as needed
 app.use(express.urlencoded({ extended: true }));
 
 app.listen(port, () => {
