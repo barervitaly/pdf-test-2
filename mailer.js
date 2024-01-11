@@ -8,7 +8,7 @@ const sendEmail = async (pdfBuffer, recipientEmail) => {
         //     pass: process.env.EMAIL_PASS
         // }
         auth: {
-            user: 'leo.barer.new', // Use environment variables
+            user: 'leo.barer.new@gmail.com', // Use environment variables
             pass: 'shsnmt88'
         }
     });
