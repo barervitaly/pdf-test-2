@@ -3,9 +3,13 @@ const nodemailer = require('nodemailer');
 const sendEmail = async (pdfBuffer, recipientEmail) => {
     const transporter = nodemailer.createTransport({
         service: 'gmail', // Example using Gmail; configure for your email provider
+        // auth: {
+        //     user: process.env.EMAIL_USER, // Use environment variables
+        //     pass: process.env.EMAIL_PASS
+        // }
         auth: {
-            user: process.env.EMAIL_USER, // Use environment variables
-            pass: process.env.EMAIL_PASS
+            user: 'leo.barer.new', // Use environment variables
+            pass: 'shsnmt88'
         }
     });
 
