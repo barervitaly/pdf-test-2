@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/generate-pdf', async (req, res) => {
-    const response = await pdf();
+    const response = await pdf(req);
     res.contentType('application/pdf');
     res.send(response);
 });

@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer');
 
-const pdf = async () => {
+const pdf = async (req) => {
     const browser = await puppeteer.launch({
         headless: true,
         args: ['--no-sandbox']
