@@ -33,12 +33,12 @@ app.get('/', (req, res) => {
 
 app.post('/generate-pdf', async (req, res) => {
     const response = await pdf(req);
-    try {
-        await mailer(response, 'barer.vitaly@gmail.com');
-        console.log('PDF generated and email sent');
-    } catch(error) {
-        console.error('Error in handling PDF request:', error);
-    }
+    // try {
+    //     await mailer(response, 'barer.vitaly@gmail.com');
+    //     console.log('PDF generated and email sent');
+    // } catch(error) {
+    //     console.error('Error in handling PDF request:', error);
+    // }
     res.contentType('application/pdf');
     res.send(response);
 });
