@@ -1,5 +1,4 @@
-const fetch = require('node-fetch');
-const FormData = require('form-data');
+
 
 const word_converter = async (pdfBuffer) => {
     const form = new FormData();
