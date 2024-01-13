@@ -43,6 +43,7 @@ app.post('/generate-pdf', async (req, res) => {
 app.post('/generate-pdf-word', async (req, res) => {
     try {
         const pdfBuffer = await pdf(req);
+        console.log("pdf success");
         const wordBuffer = await convertPdfToWord(pdfBuffer);
 
         res.json({
