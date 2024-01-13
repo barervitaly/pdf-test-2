@@ -43,18 +43,25 @@ app.post('/generate-pdf', async (req, res) => {
 app.post('/generate-pdf-word', async (req, res) => {
     try {
         const pdfBuffer = await pdf(req);
-        console.log("pdf success");
-        const wordBuffer = await convertPdfToWord(pdfBuffer);
+        console.log("PDF generation successful");
+
+        // Convert PDF to Word and get the response containing both files
+        const conversionResponse = await word_converter(pdfBuffer);
+
+        // conversionResponse contains both wordBuffer and originalPdfBuffer
+        const wordBase64 = conversionResponse.wordBuffer.toString('base64');
+        const originalPdfBase64 = conversionResponse.originalPdfBuffer.toString('base64');
 
         res.json({
-            pdf: pdfBuffer.toString('base64'),
-            word: wordBuffer.toString('base64')
+            pdf: originalPdfBase64,
+            word: wordBase64
         });
     } catch (error) {
         console.error('Error:', error);
         res.status(500).send('An error occurred');
     }
 });
+
 
 /*
 git push heroku master
