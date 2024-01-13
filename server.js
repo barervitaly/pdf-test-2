@@ -1,6 +1,7 @@
 require('dotenv').config();
 /* external dependencies*/
 const express = require('express');
+
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
@@ -11,6 +12,8 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors());
+// Increase the limit for JSON payloads
+app.use(bodyParser.json({ limit: '5mb' })); // Adjust the limit as needed
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -19,10 +22,6 @@ app.use(express.urlencoded({ extended: true }));
 const pdf = require('./pdf');
 const convertPdfToWord = require('./word_converter');
 const mailer = require('./mailer');
-
-
-// Increase the limit for JSON payloads
-app.use(bodyParser.json({ limit: '5mb' })); // Adjust the limit as needed
 
 // If you're also accepting URL-encoded payloads, increase their limit too
 app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }));
