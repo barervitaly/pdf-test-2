@@ -1,5 +1,5 @@
 require('dotenv').config();
-
+/* external dependencies*/
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -8,8 +8,9 @@ const bodyParser = require('body-parser');
 
 const app = express();
 const port = process.env.PORT || 3000;
-
+/* server modules */
 const pdf = require('./pdf');
+const convertPdfToWord = require('./word_converter');
 const mailer = require('./mailer');
 
 
@@ -33,14 +34,23 @@ app.get('/', (req, res) => {
 
 app.post('/generate-pdf', async (req, res) => {
     const response = await pdf(req);
-    // try {
-    //     await mailer(response, 'barer.vitaly@gmail.com');
-    //     console.log('PDF generated and email sent');
-    // } catch(error) {
-    //     console.error('Error in handling PDF request:', error);
-    // }
     res.contentType('application/pdf');
     res.send(response);
+});
+
+app.post('/generate-pdf-word', async (req, res) => {
+    try {
+        const pdfBuffer = await pdf(req);
+        const wordBuffer = await convertPdfToWord(pdfBuffer);
+
+        res.json({
+            pdf: pdfBuffer.toString('base64'),
+            word: wordBuffer.toString('base64')
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('An error occurred');
+    }
 });
 
 /*
