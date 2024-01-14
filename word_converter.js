@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
 const FormData = require('form-data');
 
+/*
 const word_converter = async (pdfBuffer) => {
     const form = new FormData();
     form.append('file', pdfBuffer, 'document.pdf');
@@ -28,4 +29,30 @@ const word_converter = async (pdfBuffer) => {
         originalPdfBuffer: originalPdfBuffer
     };
 };
+*/
+const word_converter = async (htmlContent) => {
+    const form = new FormData();
+    form.append('html', htmlContent);
+
+    const response = await fetch('https://pdftowordconverter-2e5f6a875985.herokuapp.com/convert-html', {
+        method: 'POST',
+        body: form
+    });
+
+    const jsonResponse = await response.json();
+
+    // Extract Base64-encoded strings
+    const wordBase64 = jsonResponse.word;
+    const pdfBase64 = jsonResponse.pdf;
+
+    // Convert Base64 back to binary
+    const wordBuffer = Buffer.from(wordBase64, 'base64');
+    const pdfBuffer = Buffer.from(pdfBase64, 'base64');
+
+    return {
+        wordBuffer: wordBuffer,
+        pdfBuffer: pdfBuffer
+    };
+};
+
 module.exports = word_converter;
