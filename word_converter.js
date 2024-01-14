@@ -31,8 +31,13 @@ const word_converter = async (pdfBuffer) => {
 };
 */
 const word_converter = async (htmlContent) => {
-    const form = new FormData();
-    form.append('html', htmlContent);
+    // const form = new FormData();
+    // form.append('html', htmlContent);
+
+    const payload = {
+        html: htmlContent,
+        returndoc: false
+    };
 
     const response = await fetch('https://pdftowordconverter-2e5f6a875985.herokuapp.com/convert-html', {
         method: 'POST',
