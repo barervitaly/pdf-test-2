@@ -41,7 +41,7 @@ const word_converter = async (htmlContent) => {
 
     const response = await fetch('https://pdftowordconverter-2e5f6a875985.herokuapp.com/convert-html', {
         method: 'POST',
-        body: form
+        body: payload
     });
 
     const jsonResponse = await response.json();
