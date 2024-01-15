@@ -6,9 +6,12 @@ const pdf = async (req) => {
         args: ['--no-sandbox']
     });
     const page = await browser.newPage();
-    await page.setContent(req.body.html); // Assuming HTML is sent in the request body
-    // console.log(req.body.html);
-    const pdfBuffer = await page.pdf({ format: 'A4' });
+    //await page.setContent(req.body.html); // Assuming HTML is sent in the request body
+    await page.goto(req.body.url, { waitUntil: 'networkidle0' });
+    const pdfBuffer = await page.pdf({ format: 'A4', margin: {
+        top: '20mm',
+        bottom: '20mm'
+        } });
     await browser.close();
     return pdfBuffer;
 }
