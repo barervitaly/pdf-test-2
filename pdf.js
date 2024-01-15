@@ -10,9 +10,7 @@ const pdf = async (req) => {
     // await page.goto(req.body.url, { waitUntil: 'networkidle0' });
     const pdfBuffer = await page.pdf({ format: 'A4', margin: {
         top: '20mm',
-        bottom: '20mm',
-        left: '10mm',
-        right: '10mm'
+        bottom: '20mm'
         },
         printBackground: true,
         footerTemplate: '<span style="font-size: 10px; width: 100%; text-align: center;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></span>',
