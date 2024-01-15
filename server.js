@@ -1,7 +1,6 @@
 require('dotenv').config();
 /* external dependencies*/
 const express = require('express');
-
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
@@ -35,21 +34,34 @@ app.get('/', (req, res) => {
 });
 
 app.post('/generate-pdf', async (req, res) => {
-    const response = await pdf(req);
-    res.contentType('application/pdf');
-    res.send(response);
+    if (!req.body.url) {
+        console.error('URL parameter is missing');
+        return res.status(500).send('URL parameter is required');
+    }
+    try {
+        const response = await pdf(req);
+        res.contentType('application/pdf');
+        res.send(response);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('An error occurred while generating the PDF');
+    }
 });
 
 app.post('/generate-pdf-word', async (req, res) => {
+    // Validate that the HTML parameter is present
+    if (!req.body.html) {
+        console.error('HTML parameter is missing');
+        return res.status(500).send('HTML parameter is required');
+    }
+
     try {
         const pdfBuffer = await pdf(req);
         console.log("PDF generation successful");
 
         // Convert PDF to Word and get the response containing both files
-        //const conversionResponse = await convertPdfToWord(pdfBuffer);
         const conversionResponse = await convertPdfToWord(req.body.html);
 
-        // conversionResponse contains both wordBuffer and originalPdfBuffer
         const wordBase64 = conversionResponse.wordBuffer.toString('base64');
         const originalPdfBase64 = conversionResponse.pdfBuffer.toString('base64');
 
@@ -59,7 +71,7 @@ app.post('/generate-pdf-word', async (req, res) => {
         });
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).send('An error occurred');
+        res.status(500).send('An error occurred during conversion');
     }
 });
 
