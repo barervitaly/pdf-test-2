@@ -60,7 +60,7 @@ app.post('/generate-pdf-word', async (req, res) => {
         console.log("PDF generation successful");
 
         // Convert PDF to Word and get the response containing both files
-        const conversionResponse = await convertPdfToWord(req.body.html);
+        const conversionResponse = await convertPdfToWord(pdfBuffer);
 
         const wordBase64 = conversionResponse.wordBuffer.toString('base64');
         const originalPdfBase64 = conversionResponse.pdfBuffer.toString('base64');
