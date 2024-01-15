@@ -35,7 +35,7 @@ app.get('/', (req, res) => {
 
 app.post('/generate-pdf', async (req, res) => {
     if (!req.body.html) {
-        console.error('HTML parameter is missing');
+        console.error('HTML parameter is missing' );
         return res.status(500).send('HTML parameter is required');
     }
     try {
