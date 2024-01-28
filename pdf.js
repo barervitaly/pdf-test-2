@@ -21,6 +21,4 @@ const pdf = async (req) => {
     return pdfBuffer;
 }
 
-
-
 module.exports = pdf;
