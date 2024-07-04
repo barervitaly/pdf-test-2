@@ -28,7 +28,7 @@ app.listen(port, () => {
 });
 
 app.get('/', (req, res) => {
-    res.send('Welcome to HTML to PDF Service!');
+    res.send('Tzomet PDF Generation Service');
 });
 
 app.post('/generate-pdf', async (req, res) => {
