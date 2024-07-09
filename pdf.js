@@ -36,9 +36,14 @@ const pdf = async (req) => {
     const pdfBuffer = await page.pdf({
         format: 'A4',
         printBackground: true,
-        footerTemplate: '<span style="font-size: 10px; width: 100%; text-align: center;">Page <span class="pageNumber"></span> of <span class="totalPages"></span></span>',
         displayHeaderFooter: false,
-        preferCSSPageSize: false
+        preferCSSPageSize: false,
+        margin: {
+            top: '0',
+            right: '0',
+            bottom: '0',
+            left: '0'
+        }
     });
     await browser.close();
     return pdfBuffer;
