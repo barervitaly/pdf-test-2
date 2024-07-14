@@ -42,7 +42,7 @@ const pdf = async (req, browser) => {
         await page.setContent(req.body.html);
 
         console.log('Waiting for animations to finish...');
-        await page.waitForTimeout(2000);
+        await page.waitForTimeout(3000);
 
         console.log('Generating PDF...');
         const pdfBuffer = await page.pdf({
