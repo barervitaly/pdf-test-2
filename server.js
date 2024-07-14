@@ -1,5 +1,5 @@
 require('dotenv').config();
-/* external dependencies*/
+/* external dependencies */
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -8,15 +8,13 @@ const puppeteer = require('puppeteer');
 let browser;
 
 const app = express();
-
 const port = process.env.PORT || 3000;
 
 app.use(cors());
 // Increase the limit for JSON payloads
-app.use(bodyParser.json({ limit: '5mb' })); // Adjust the limit as needed
+app.use(bodyParser.json({ limit: '5mb' }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 
 /* server modules */
 const pdf = require('./pdf');
@@ -25,10 +23,6 @@ const pdf = require('./pdf');
 
 // If you're also accepting URL-encoded payloads, increase their limit too
 app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }));
-
-// app.listen(port, () => {
-//     console.log(`listening the port :${port}`);
-// });
 
 const startServer = async () => {
     try {
@@ -53,20 +47,29 @@ app.get('/', (req, res) => {
 
 app.post('/generate-pdf', async (req, res) => {
     if (!req.body.html) {
-        console.error('HTML parameter is missing' );
-        return res.status(500).send('HTML parameter is required');
+        console.error('HTML parameter is missing');
+        return res.status(400).send('HTML parameter is required'); // Use 400 for bad request
     }
+    let pdfGenerated = false; // Flag to ensure PDF is generated only once
     try {
-        const response = await pdf(req, browser);
-        console.log("pdf is ready, creating the response");
-        if (!res.headersSent) {
-            res.contentType('application/pdf');
-            res.send(response);
-            console.log("PDF returned");
+        console.log('Received request for PDF generation');
+
+        if (!pdfGenerated) {
+            pdfGenerated = true; // Set flag to true
+            const response = await pdf(req, browser);
+            console.log('PDF generated successfully');
+
+            if (!res.headersSent) {
+                res.contentType('application/pdf');
+                res.send(response);
+                console.log('PDF response sent successfully');
+            }
         }
     } catch (error) {
-        console.error('Error:', error);
-        res.status(500).send('An error occurred while generating the PDF');
+        console.error('Error generating PDF:', error);
+        if (!res.headersSent) {
+            res.status(500).send('An error occurred while generating the PDF');
+        }
     }
 });
 
@@ -75,32 +78,38 @@ startServer().catch(error => {
     process.exit(1);
 });
 
-// app.post('/generate-pdf-word', async (req, res) => {
-//     // Validate that the HTML parameter is present
-//     if (!req.body.html) {
-//         console.error('HTML parameter is missing');
-//         return res.status(500).send('HTML parameter is required');
-//     }
-//
-//     try {
-//         const pdfBuffer = await pdf(req);
-//         console.log("PDF generation successful");
-//
-//         // Convert PDF to Word and get the response containing both files
-//         const conversionResponse = await convertPdfToWord(pdfBuffer);
-//
-//         const wordBase64 = conversionResponse.wordBuffer.toString('base64');
-//         const originalPdfBase64 = conversionResponse.pdfBuffer.toString('base64');
-//
-//         res.json({
-//             pdf: originalPdfBase64,
-//             word: wordBase64
-//         });
-//     } catch (error) {
-//         console.error('Error:', error);
-//         res.status(500).send('An error occurred during conversion');
-//     }
-// });
+/*
+// Uncomment if you are using these routes
+app.post('/generate-pdf-word', async (req, res) => {
+    if (!req.body.html) {
+        console.error('HTML parameter is missing');
+        return res.status(400).send('HTML parameter is required');
+    }
+
+    try {
+        const pdfBuffer = await pdf(req, browser);
+        console.log("PDF generation successful");
+
+        const conversionResponse = await convertPdfToWord(pdfBuffer);
+        const wordBase64 = conversionResponse.wordBuffer.toString('base64');
+        const originalPdfBase64 = conversionResponse.pdfBuffer.toString('base64');
+
+        if (!res.headersSent) {
+            res.json({
+                pdf: originalPdfBase64,
+                word: wordBase64
+            });
+            console.log('Conversion response sent successfully');
+        }
+    } catch (error) {
+        console.error('Error during conversion:', error);
+        if (!res.headersSent) {
+            res.status(500).send('An error occurred during conversion');
+        }
+    }
+});
+*/
+
 
 
 /*
