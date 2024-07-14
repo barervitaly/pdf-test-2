@@ -66,6 +66,11 @@ app.post('/generate-pdf', async (req, res) => {
     }
 });
 
+startServer().catch(error => {
+    console.error('Error starting server:', error);
+    process.exit(1);
+});
+
 // app.post('/generate-pdf-word', async (req, res) => {
 //     // Validate that the HTML parameter is present
 //     if (!req.body.html) {
