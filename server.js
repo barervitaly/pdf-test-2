@@ -58,6 +58,7 @@ app.post('/generate-pdf', async (req, res) => {
     }
     try {
         const response = await pdf(req, browser);
+        console.log("pdf is ready, creating the response");
         res.contentType('application/pdf');
         res.send(response);
     } catch (error) {
