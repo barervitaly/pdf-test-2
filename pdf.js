@@ -33,14 +33,8 @@
 
 const puppeteer = require('puppeteer');
 
-const pdf = async (req) => {
+const pdf = async (req, browser) => {
     try {
-        console.log('Launching browser...');
-        const browser = await puppeteer.launch({
-            headless: 'new', // Use the new headless mode
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
-        });
-
         console.log('Opening new page...');
         const page = await browser.newPage();
 
@@ -64,8 +58,7 @@ const pdf = async (req) => {
             }
         });
 
-        console.log('Closing browser...');
-        await browser.close();
+        await page.close(); // Close the page after use
 
         console.log('PDF generation complete');
         return pdfBuffer;
@@ -76,4 +69,3 @@ const pdf = async (req) => {
 };
 
 module.exports = pdf;
-
