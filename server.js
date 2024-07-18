@@ -42,10 +42,12 @@ const startServer = async () => {
 };
 
 app.get('/', (req, res) => {
+    console.log("pdf generation server")
     res.send('Tzomet PDF Generation Service');
 });
 
 app.post('/generate-pdf', async (req, res) => {
+    console.log("generate pdf endpoint");
     if (!req.body.html) {
         console.error('HTML parameter is missing');
         return res.status(400).send('HTML parameter is required'); // Use 400 for bad request
