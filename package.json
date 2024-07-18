@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "heroku-postbuild": "mkdir ./.cache && mv /app/.cache/puppeteer ./.cache"
+    "start": "pm2 start server.js --name tzomet-print-pdf",
+    "stop": "pm2 stop tzomet-print-pdf",
+    "restart": "pm2 restart tzomet-print-pdf",
+    "delete": "pm2 delete tzomet-print-pdf"
   },
   "keywords": [],
   "author": "",
